@@ -11,6 +11,7 @@ class Canvas:
         # This is a grid that contains data about where the 
         # TerminalScribes have visited
         self._canvas = [[' ' for y in range(self._y)] for x in range(self._x)]
+        
 
     # Returns True if the given point is outside the boundaries of the Canvas
     def hitsWall(self, point):
@@ -37,6 +38,13 @@ class TerminalScribe:
         self.mark = '*'
         self.framerate = 0.2
         self.pos = [0, 0]
+        self._square_path = ["right", "down", "left", "up"]
+        self._direction_dict = {
+            "right": self.right, 
+            "down": self.down,
+            "left": self.left,
+            "up": self.up
+        }
 
     def up(self):
         pos = [self.pos[0], self.pos[1]-1]
@@ -70,24 +78,21 @@ class TerminalScribe:
         # Sleep for a little bit to create the animation
         time.sleep(self.framerate)
 
+    def drawSquare(self, size):
+        for dir in self._square_path:
+            for i in range(0, size - 1):
+                self._direction_dict[dir]()
+                
+    
+
 # Create a new Canvas instance that is 30 units wide by 30 units tall 
-canvas = Canvas(30, 30)
+canvas = Canvas(20, 20)
 
 # Create a new scribe and give it the Canvas object
 scribe = TerminalScribe(canvas)
 
 # Draw a small square
-scribe.right()
-scribe.right()
-scribe.right()
-scribe.down()
-scribe.down()
-scribe.down()
-scribe.left()
-scribe.left()
-scribe.left()
-scribe.up()
-scribe.up()
-scribe.up()
+
+scribe.drawSquare(5)
 
 
